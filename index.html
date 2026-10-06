@@ -4,17 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#faf8f3">
+  <meta name="color-scheme" content="light dark">
   <title>Русская классика</title>
   <link rel="stylesheet" href="style.css">
+  <script>
+    (function() {
+      var saved = localStorage.getItem("theme");
+      if (saved === "dark") {
+        document.documentElement.classList.add("theme-dark");
+      }
+    })();
+  </script>
 </head>
 <body>
 
   <header class="app-header">
     <div class="header-inner">
       <span class="header-logo" id="header-title">Русская классика</span>
-      <div class="reader-toolbar" id="reader-controls" hidden>
-        <button type="button" class="btn btn-tool" id="btn-font-dec" aria-label="Уменьшить шрифт">А−</button>
-        <button type="button" class="btn btn-tool" id="btn-font-inc" aria-label="Увеличить шрифт">А+</button>
+      <div class="header-actions">
+        <button type="button" class="btn btn-theme" id="btn-theme-toggle" aria-label="Переключить тему">Тёмная</button>
+        <div class="reader-toolbar" id="reader-controls" hidden>
+          <button type="button" class="btn btn-tool" id="btn-font-dec" aria-label="Уменьшить шрифт">А−</button>
+          <button type="button" class="btn btn-tool" id="btn-font-inc" aria-label="Увеличить шрифт">А+</button>
+        </div>
       </div>
     </div>
   </header>

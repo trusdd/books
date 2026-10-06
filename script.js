@@ -37,6 +37,39 @@ const readerTextArea = document.getElementById("reader-text-area");
 const readerStatus = document.getElementById("reader-status");
 
 const btnScrollTop = document.getElementById("btn-scroll-top");
+const btnThemeToggle = document.getElementById("btn-theme-toggle");
+
+function initTheme() {
+  const saved = localStorage.getItem("theme");
+  const isDark = saved === "dark";
+  if (isDark) {
+    document.documentElement.classList.add("theme-dark");
+  } else {
+    document.documentElement.classList.remove("theme-dark");
+  }
+  updateThemeButtonLabel();
+  updateThemeColorMeta();
+}
+
+function updateThemeButtonLabel() {
+  const isDark = document.documentElement.classList.contains("theme-dark");
+  btnThemeToggle.textContent = isDark ? "Светлая" : "Тёмная";
+}
+
+function updateThemeColorMeta() {
+  const isDark = document.documentElement.classList.contains("theme-dark");
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) {
+    meta.setAttribute("content", isDark ? "#202020" : "#faf8f3");
+  }
+}
+
+btnThemeToggle.addEventListener("click", () => {
+  const isDark = document.documentElement.classList.toggle("theme-dark");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+  updateThemeButtonLabel();
+  updateThemeColorMeta();
+});
 
 function getScrollKey(bookId) {
   return "scroll_pos_" + bookId;
@@ -162,7 +195,7 @@ function renderCatalog() {
 
     const metaEl = document.createElement("div");
     metaEl.className = "item-card-meta";
-    metaEl.textContent = `${book.genre} • ${book.year} год`;
+    metaEl.textContent = book.genre;
 
     card.appendChild(titleEl);
     card.appendChild(authorEl);
@@ -202,7 +235,7 @@ function showDetailsView(book) {
   headerTitle.textContent = "О книге";
   detailTitle.textContent = book.title;
   detailAuthor.textContent = book.author;
-  detailMeta.textContent = `Жанр: ${book.genre} | Год издания: ${book.year}`;
+  detailMeta.textContent = `Жанр: ${book.genre}`;
   detailDescription.textContent = book.description;
 
   if (hasProgress(book.id)) {
@@ -249,7 +282,8 @@ async function showReaderView() {
   readerStatus.textContent = "Загрузка текста книги...";
 
   try {
-    const res = await fetch(currentBook.textUrl);
+    const encodedUrl = encodeURI(currentBook.textUrl);
+    const res = await fetch(encodedUrl);
     if (!res.ok) {
       throw new Error("Текст книги недоступен");
     }
@@ -348,5 +382,6 @@ window.addEventListener("beforeunload", () => {
   saveReadingProgress();
 });
 
+initTheme();
 initReaderSettings();
 loadCatalogData();
