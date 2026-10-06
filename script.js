@@ -257,7 +257,7 @@ function showCatalogView() {
   viewCatalog.hidden = false;
   readerControls.hidden = true;
 
-  headerTitle.textContent = "Русская классика";
+  headerTitle.textContent = "Приятного чтения!";
   window.scrollTo(0, 0);
   renderCatalog();
   updateScrollTopButton();
