@@ -312,8 +312,6 @@ async function showReaderView(book) {
   if (!book) return;
   currentBook = book;
 
-  localStorage.setItem("last_book_id", book.id);
-
   viewCatalog.hidden = true;
   viewDetails.hidden = true;
   viewReader.hidden = false;
@@ -382,6 +380,9 @@ function saveReadingProgress() {
     const scrollKey = getScrollKey(currentBook.id);
     const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
     localStorage.setItem(scrollKey, scrollY.toString());
+    if (scrollY > 200) {
+      localStorage.setItem("last_book_id", currentBook.id);
+    }
   }
 }
 
