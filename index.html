@@ -3,46 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-  <title>Библиотека классики</title>
+  <title>Библиотека</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <span class="header-title" id="nav-title">Библиотека</span>
+    <div class="header-left">
+      <span class="header-title" id="nav-title">Библиотека</span>
+    </div>
     <div class="controls">
-      <button class="btn" id="btn-font-dec">A−</button>
-      <button class="btn" id="btn-font-inc">A+</button>
-      <button class="btn" id="btn-theme">🌓</button>
+      <button class="btn btn-icon" id="btn-font-dec" aria-label="Уменьшить шрифт">A−</button>
+      <button class="btn btn-icon" id="btn-font-inc" aria-label="Увеличить шрифт">A+</button>
+      <button class="btn btn-icon" id="btn-theme" aria-label="Сменить тему">🌓</button>
     </div>
   </header>
 
   <main>
     <section id="library-view">
-      <input type="text" class="search-input" id="search-box" placeholder="Поиск произведения или автора...">
-      
+      <div class="search-wrap">
+        <input type="text" class="search-input" id="search-box" placeholder="Поиск книги или автора...">
+      </div>
+
       <div class="filter-bar" id="filters-container">
-        <button class="filter-chip active" data-author="all">Все</button>
+        <button class="filter-chip active" data-author="all">Все книги</button>
         <button class="filter-chip" data-author="Пушкин">Пушкин</button>
         <button class="filter-chip" data-author="Чехов">Чехов</button>
         <button class="filter-chip" data-author="Толстой">Толстой</button>
         <button class="filter-chip" data-author="Гоголь">Гоголь</button>
         <button class="filter-chip" data-author="Достоевский">Достоевский</button>
         <button class="filter-chip" data-author="Тургенев">Тургенев</button>
-        <button class="filter-chip" data-author="Лермонтов">Лермонтов</button>
       </div>
 
       <div class="book-list" id="books-container"></div>
     </section>
 
-    <section id="reader-view">
-      <button class="btn btn-full" id="btn-back">← Вернуться к списку книг</button>
-      <h1 id="reader-title"></h1>
-      <div id="reader-author" class="reader-subtitle"></div>
+    <section id="chapter-select-view">
+      <button class="btn btn-nav" id="btn-back-to-library">← К списку книг</button>
+      <h1 class="book-heading" id="select-title"></h1>
+      <div class="book-author" id="select-author"></div>
       
-      <div id="reader-status" class="status-msg"></div>
+      <h2 class="chapters-title">Выберите главу для чтения:</h2>
+      <div class="chapters-list" id="chapters-container"></div>
+    </section>
+
+    <section id="reader-view">
+      <div class="reader-top-nav">
+        <button class="btn btn-nav" id="btn-back-to-chapters">← К главам</button>
+        <button class="btn btn-nav" id="btn-back-to-books">К списку книг</button>
+      </div>
+
+      <div class="reader-header-info">
+        <h1 class="reader-book-title" id="reader-book-title"></h1>
+        <div class="reader-chapter-title" id="reader-chapter-title"></div>
+      </div>
+
       <article class="book-content" id="reader-content"></article>
 
-      <button class="btn btn-full" id="btn-back-bottom">← Вернуться к списку книг</button>
+      <div class="chapter-navigation">
+        <button class="btn btn-chapter-step" id="btn-prev-chapter">← Предыдущая глава</button>
+        <button class="btn btn-chapter-step" id="btn-next-chapter">Следующая глава →</button>
+      </div>
+
+      <button class="btn btn-nav btn-full" id="btn-bottom-to-chapters">← Вернуться к оглавлению</button>
     </section>
   </main>
 

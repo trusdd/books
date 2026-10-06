@@ -1,22 +1,24 @@
 :root {
-    --bg: #F8F5EE;
+    --bg: #F9F6F0;
     --surface: #FFFFFF;
-    --text: #1F1F1F;
-    --subtext: #595959;
-    --accent: #2C4D75;
+    --text: #1C1C1E;
+    --subtext: #48484A;
+    --accent: #1C4472;
+    --accent-light: #EBF2FA;
     --border: #DDD5C7;
-    --card-active: #EDE7DC;
+    --card-active: #EFE9DE;
     --font-size: 22px;
   }
   
   body.dark {
-    --bg: #141414;
-    --surface: #222222;
-    --text: #E6E6E6;
-    --subtext: #999999;
-    --accent: #7EA8D6;
-    --border: #383838;
-    --card-active: #2D2D2D;
+    --bg: #121212;
+    --surface: #1E1E1E;
+    --text: #F2F2F7;
+    --subtext: #AEAEB2;
+    --accent: #5E9CAE;
+    --accent-light: #162C38;
+    --border: #333333;
+    --card-active: #2C2C2E;
   }
   
   * {
@@ -41,7 +43,7 @@
   header {
     background: var(--surface);
     border-bottom: 2px solid var(--border);
-    padding: 12px 16px;
+    padding: 12px 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -51,13 +53,18 @@
   }
   
   .header-title {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     color: var(--accent);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 170px;
+    max-width: 180px;
+  }
+  
+  .controls {
+    display: flex;
+    gap: 8px;
   }
   
   .btn {
@@ -66,48 +73,58 @@
     color: var(--text);
     font-size: 18px;
     font-weight: 700;
-    border-radius: 12px;
-    padding: 6px 14px;
+    border-radius: 14px;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 48px;
+    min-height: 50px;
+  }
+  
+  .btn-icon {
+    width: 52px;
+    padding: 0;
+    font-size: 20px;
+  }
+  
+  .btn-nav {
+    padding: 10px 18px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    font-size: 18px;
   }
   
   .btn-full {
     width: 100%;
-    margin-bottom: 16px;
-    margin-top: 16px;
+    margin-top: 24px;
+    margin-bottom: 24px;
   }
   
   .btn:active {
     background: var(--card-active);
   }
   
-  .controls {
-    display: flex;
-    gap: 8px;
-  }
-  
   main {
     flex: 1;
     padding: 16px;
-    max-width: 750px;
+    max-width: 760px;
     width: 100%;
     margin: 0 auto;
   }
   
+  .search-wrap {
+    margin-bottom: 14px;
+  }
+  
   .search-input {
     width: 100%;
-    height: 54px;
+    height: 56px;
     font-size: 20px;
-    padding: 0 16px;
+    padding: 0 18px;
     border: 2px solid var(--border);
-    border-radius: 12px;
+    border-radius: 14px;
     background: var(--surface);
     color: var(--text);
-    margin-bottom: 16px;
   }
   
   .filter-bar {
@@ -125,8 +142,8 @@
   
   .filter-chip {
     white-space: nowrap;
-    padding: 10px 18px;
-    border-radius: 24px;
+    padding: 10px 20px;
+    border-radius: 25px;
     border: 2px solid var(--border);
     background: var(--surface);
     color: var(--text);
@@ -144,15 +161,16 @@
   .book-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
   }
   
   .book-card {
     background: var(--surface);
     border: 2px solid var(--border);
-    border-radius: 14px;
-    padding: 18px;
+    border-radius: 16px;
+    padding: 20px;
     cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
   }
   
   .book-card:active {
@@ -160,7 +178,7 @@
   }
   
   .book-card h3 {
-    font-size: 22px;
+    font-size: 23px;
     color: var(--accent);
     margin-bottom: 6px;
   }
@@ -170,60 +188,119 @@
     color: var(--subtext);
   }
   
-  #reader-view {
+  #chapter-select-view, #reader-view {
     display: none;
   }
   
-  #reader-title {
+  .book-heading {
     font-size: 28px;
     line-height: 1.3;
-    margin-top: 8px;
+    margin-top: 14px;
+    color: var(--accent);
   }
   
-  .reader-subtitle {
+  .book-author {
     font-size: 20px;
     color: var(--subtext);
     margin-bottom: 24px;
   }
   
+  .chapters-title {
+    font-size: 22px;
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+  
+  .chapters-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .chapter-card-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 18px 20px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    color: var(--text);
+    font-size: 20px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+  }
+  
+  .chapter-card-btn:active {
+    background: var(--card-active);
+  }
+  
+  .chapter-arrow {
+    color: var(--accent);
+    font-size: 24px;
+    font-weight: 700;
+  }
+  
+  .reader-top-nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  
+  .reader-header-info {
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--border);
+  }
+  
+  .reader-book-title {
+    font-size: 26px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  
+  .reader-chapter-title {
+    font-size: 20px;
+    color: var(--subtext);
+    font-weight: 600;
+  }
+  
   .book-content {
     font-size: var(--font-size);
-    margin-top: 20px;
+    margin-top: 16px;
     text-align: justify;
     word-wrap: break-word;
   }
   
   .book-content p {
     margin-bottom: 1.4em;
-    text-indent: 1.5em;
+    text-indent: 1.6em;
   }
   
-  .book-content h2, .book-content h3, .book-content h4 {
-    margin-top: 1.5em;
-    margin-bottom: 0.8em;
-    text-align: center;
-    color: var(--accent);
-    font-size: 1.25em;
+  .chapter-navigation {
+    display: flex;
+    gap: 12px;
+    margin-top: 36px;
   }
   
-  .chapter-btn {
-    display: block;
-    width: 100%;
-    margin: 12px 0;
-    padding: 14px;
-    background: var(--surface);
+  .btn-chapter-step {
+    flex: 1;
+    padding: 14px 10px;
+    font-size: 17px;
+    background: var(--accent-light);
     border: 2px solid var(--accent);
     color: var(--accent);
-    border-radius: 12px;
-    font-size: 19px;
-    font-weight: 600;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
+    font-weight: 700;
   }
   
-  .chapter-btn:active {
-    background: var(--card-active);
+  .btn-chapter-step:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    border-color: var(--border);
+    background: var(--surface);
+    color: var(--subtext);
   }
   
   .status-msg {

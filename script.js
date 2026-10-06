@@ -1,213 +1,202 @@
-const CATALOG = [
-    { id: "Метель_(Пушкин)", title: "Метель", author: "Александр Пушкин" },
-    { id: "Выстрел_(Пушкин)", title: "Выстрел", author: "Александр Пушкин" },
-    { id: "Гробовщик_(Пушкин)", title: "Гробовщик", author: "Александр Пушкин" },
-    { id: "Станционный_смотритель_(Пушкин)", title: "Станционный смотритель", author: "Александр Пушкин" },
-    { id: "Барышня-крестьянка_(Пушкин)", title: "Барышня-крестьянка", author: "Александр Пушкин" },
-    { id: "Пиковая_дама_(Пушкин)", title: "Пиковая дама", author: "Александр Пушкин" },
-    { id: "Капитанская_дочка_(Пушкин)", title: "Капитанская дочка", author: "Александр Пушкин" },
-    { id: "Медный_всадник_(Пушкин)", title: "Медный всадник", author: "Александр Пушкин" },
-  
-    { id: "Палата_№_6_(Чехов)", title: "Палата № 6", author: "Антон Чехов" },
-    { id: "Дама_с_собачкой_(Чехов)", title: "Дама с собачкой", author: "Антон Чехов" },
-    { id: "Человек_в_футляре_(Чехов)", title: "Человек в футляре", author: "Антон Чехов" },
-    { id: "Хамелеон_(Чехов)", title: "Хамелеон", author: "Антон Чехов" },
-    { id: "Толстый_и_тонкий_(Чехов)", title: "Толстый и тонкий", author: "Антон Чехов" },
-    { id: "Смерть_чиновника_(Чехов)", title: "Смерть чиновника", author: "Антон Чехов" },
-    { id: "Каштанка_(Чехов)", title: "Каштанка", author: "Антон Чехов" },
-    { id: "Крыжовник_(Чехов)", title: "Крыжовник", author: "Антон Чехов" },
-    { id: "О_любви_(Чехов)", title: "О любви", author: "Антон Чехов" },
-    { id: "Студент_(Чехов)", title: "Студент", author: "Антон Чехов" },
-  
-    { id: "Смерть_Ивана_Ильича_(Толстой)", title: "Смерть Ивана Ильича", author: "Лев Толстой" },
-    { id: "Кавказский_пленник_(Толстой)", title: "Кавказский пленник", author: "Лев Толстой" },
-    { id: "После_бала_(Толстой)", title: "После бала", author: "Лев Толстой" },
-    { id: "Филипок_(Толстой)", title: "Филипок", author: "Лев Толстой" },
-    { id: "Хаджи-Мурат_(Толстой)", title: "Хаджи-Мурат", author: "Лев Толстой" },
-    { id: "Отец_Сергий_(Толстой)", title: "Отец Сергий", author: "Лев Толстой" },
-  
-    { id: "Шинель_(Гоголь)", title: "Шинель", author: "Николай Гоголь" },
-    { id: "Нос_(Гоголь)", title: "Нос", author: "Николай Гоголь" },
-    { id: "Портрет_(Гоголь)", title: "Портрет", author: "Николай Гоголь" },
-    { id: "Коляска_(Гоголь)", title: "Коляска", author: "Николай Гоголь" },
-    { id: "Вий_(Гоголь)", title: "Вий", author: "Николай Гоголь" },
-    { id: "Тарас_Бульба_(Гоголь)", title: "Тарас Бульба", author: "Николай Гоголь" },
-  
-    { id: "Белые_ночи_(Достоевский)", title: "Белые ночи", author: "Фёдор Достоевский" },
-    { id: "Мальчик_у_Христа_на_ёлке_(Достоевский)", title: "Мальчик у Христа на ёлке", author: "Фёдор Достоевский" },
-    { id: "Кроткая_(Достоевский)", title: "Кроткая", author: "Фёдор Достоевский" },
-    { id: "Мужик_Марей_(Достоевский)", title: "Мужик Марей", author: "Фёдор Достоевский" },
-  
-    { id: "Муму_(Тургенев)", title: "Муму", author: "Иван Тургенев" },
-    { id: "Ася_(Тургенев)", title: "Ася", author: "Иван Тургенев" },
-    { id: "Бежин_луг_(Тургенев)", title: "Бежин луг", author: "Иван Тургенев" },
-    { id: "Бирюк_(Тургенев)", title: "Бирюк", author: "Иван Тургенев" },
-    { id: "Певцы_(Тургенев)", title: "Певцы", author: "Иван Тургенев" },
-  
-    { id: "Бэла_(Лермонтов)", title: "Герой нашего времени: Бэла", author: "Михаил Лермонтов" },
-    { id: "Максим_Максимыч_(Лермонтов)", title: "Герой нашего времени: Максим Максимыч", author: "Михаил Лермонтов" },
-    { id: "Тамань_(Лермонтов)", title: "Герой нашего времени: Тамань", author: "Михаил Лермонтов" },
-    { id: "Княжна_Мери_(Лермонтов)", title: "Герой нашего времени: Княжна Мери", author: "Михаил Лермонтов" },
-    { id: "Фаталист_(Лермонтов)", title: "Герой нашего времени: Фаталист", author: "Михаил Лермонтов" },
-    { id: "Мцыри_(Лермонтов)", title: "Мцыри", author: "Михаил Лермонтов" },
-    { id: "Песня_про_царя_Ивана_Васильевича_(Лермонтов)", title: "Песня про царя Ивана Васильевича", author: "Михаил Лермонтов" }
-  ];
-  
-  let currentFontSize = parseInt(localStorage.getItem('lib_font') || '22');
-  let isDark = localStorage.getItem('lib_theme') === 'dark';
-  let activeFilter = 'all';
-  
-  const libraryView = document.getElementById('library-view');
-  const readerView = document.getElementById('reader-view');
-  const booksContainer = document.getElementById('books-container');
-  const readerTitle = document.getElementById('reader-title');
-  const readerAuthor = document.getElementById('reader-author');
-  const readerContent = document.getElementById('reader-content');
-  const readerStatus = document.getElementById('reader-status');
-  const navTitle = document.getElementById('nav-title');
-  const searchBox = document.getElementById('search-box');
-  const filterButtons = document.querySelectorAll('.filter-chip');
-  
-  function applyFontSize(val) {
-    currentFontSize = Math.min(Math.max(val, 16), 36);
-    document.documentElement.style.setProperty('--font-size', `${currentFontSize}px`);
-    localStorage.setItem('lib_font', currentFontSize);
+let booksData = [];
+let currentBook = null;
+let currentChapterIndex = 0;
+
+let currentFontSize = parseInt(localStorage.getItem('lib_font') || '22');
+let isDark = localStorage.getItem('lib_theme') === 'dark';
+let activeFilter = 'all';
+
+const libraryView = document.getElementById('library-view');
+const chapterSelectView = document.getElementById('chapter-select-view');
+const readerView = document.getElementById('reader-view');
+
+const booksContainer = document.getElementById('books-container');
+const chaptersContainer = document.getElementById('chapters-container');
+const searchBox = document.getElementById('search-box');
+const filterButtons = document.querySelectorAll('.filter-chip');
+
+const navTitle = document.getElementById('nav-title');
+const selectTitle = document.getElementById('select-title');
+const selectAuthor = document.getElementById('select-author');
+
+const readerBookTitle = document.getElementById('reader-book-title');
+const readerChapterTitle = document.getElementById('reader-chapter-title');
+const readerContent = document.getElementById('reader-content');
+
+const btnPrevChapter = document.getElementById('btn-prev-chapter');
+const btnNextChapter = document.getElementById('btn-next-chapter');
+
+function applyFontSize(val) {
+  currentFontSize = Math.min(Math.max(val, 16), 36);
+  document.documentElement.style.setProperty('--font-size', `${currentFontSize}px`);
+  localStorage.setItem('lib_font', currentFontSize);
+}
+
+function applyTheme(dark) {
+  isDark = dark;
+  if (dark) {
+    document.body.classList.add('dark');
+    localStorage.setItem('lib_theme', 'dark');
+  } else {
+    document.body.classList.remove('dark');
+    localStorage.setItem('lib_theme', 'light');
   }
-  
-  function applyTheme(dark) {
-    isDark = dark;
-    if (dark) {
-      document.body.classList.add('dark');
-      localStorage.setItem('lib_theme', 'dark');
-    } else {
-      document.body.classList.remove('dark');
-      localStorage.setItem('lib_theme', 'light');
-    }
-  }
-  
-  applyFontSize(currentFontSize);
-  applyTheme(isDark);
-  
-  function renderList() {
-    const q = searchBox.value.trim().toLowerCase();
-    booksContainer.innerHTML = '';
-  
-    const filtered = CATALOG.filter(item => {
-      const matchesFilter = (activeFilter === 'all') || item.author.includes(activeFilter);
-      const matchesQuery = !q || item.title.toLowerCase().includes(q) || item.author.toLowerCase().includes(q);
-      return matchesFilter && matchesQuery;
-    });
-  
-    if (filtered.length === 0) {
-      booksContainer.innerHTML = '<div class="status-msg">Ничего не найдено</div>';
-      return;
-    }
-  
-    filtered.forEach(book => {
-      const card = document.createElement('div');
-      card.className = 'book-card';
-      card.innerHTML = `<h3>${book.title}</h3><p>${book.author}</p>`;
-      card.onclick = () => loadBook(book.id, book.title, book.author);
-      booksContainer.appendChild(card);
-    });
-  }
-  
-  async function loadBook(bookId, bookTitle, bookAuthor) {
-    libraryView.style.display = 'none';
-    readerView.style.display = 'block';
-    navTitle.innerText = bookTitle;
-    readerTitle.innerText = bookTitle;
-    readerAuthor.innerText = bookAuthor;
-    readerContent.innerHTML = '';
-    readerStatus.style.display = 'block';
-    readerStatus.innerText = 'Загрузка книги...';
-    window.scrollTo(0, 0);
-  
-    localStorage.setItem('lib_saved_id', bookId);
-    localStorage.setItem('lib_saved_title', bookTitle);
-    localStorage.setItem('lib_saved_author', bookAuthor);
-  
-    try {
-      const url = `https://ru.wikisource.org/w/api.php?action=parse&page=${encodeURIComponent(bookId)}&prop=text&format=json&origin=*`;
-      const res = await fetch(url, {
-        headers: {
-          'Api-User-Agent': 'GrandpaReaderApp/1.0 (https://github.com/trusdd/books)'
-        }
-      });
-  
-      if (!res.ok) throw new Error('Ошибка сети');
-  
-      const data = await res.json();
-      if (data.error || !data.parse || !data.parse.text) {
-        throw new Error('Книга не найдена в хранилище');
+}
+
+applyFontSize(currentFontSize);
+applyTheme(isDark);
+
+async function initLibrary() {
+  try {
+    const res = await fetch('books.json');
+    if (!res.ok) throw new Error('Ошибка загрузки books.json');
+    booksData = await res.json();
+    renderBooksList();
+
+    const savedBookId = localStorage.getItem('lib_last_book_id');
+    const savedChapterIdx = parseInt(localStorage.getItem('lib_last_chapter_idx') || '0');
+    if (savedBookId) {
+      const b = booksData.find(item => item.id === savedBookId);
+      if (b) {
+        currentBook = b;
+        openChapter(savedChapterIdx);
       }
-  
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(data.parse.text['*'], 'text/html');
-  
-      const garbageSelectors = [
-        'table', '.navigation-box', '.ws-noexport', 'script', 'style',
-        '.mw-empty-elt', '.header', '.plainlinks', '.metadata',
-        '.catlinks', '.printfooter', '#toc', '.toc', '.mw-editsection'
-      ];
-      garbageSelectors.forEach(sel => {
-        doc.querySelectorAll(sel).forEach(el => el.remove());
-      });
-  
-      doc.querySelectorAll('a').forEach(a => {
-        const href = a.getAttribute('href') || '';
-        if (href.startsWith('/wiki/')) {
-          const targetPage = decodeURIComponent(href.replace(/^\/wiki\//, ''));
-          a.className = 'chapter-btn';
-          a.onclick = (e) => {
-            e.preventDefault();
-            loadBook(targetPage, a.innerText.trim() || bookTitle, bookAuthor);
-          };
-        } else {
-          const span = document.createElement('span');
-          span.innerHTML = a.innerHTML;
-          a.replaceWith(span);
-        }
-      });
-  
-      readerContent.innerHTML = doc.body.innerHTML;
-      readerStatus.style.display = 'none';
-    } catch (err) {
-      readerStatus.innerText = 'Не удалось загрузить книгу. Проверьте интернет-соединение.';
     }
+  } catch (e) {
+    booksContainer.innerHTML = '<div class="status-msg">Не удалось загрузить книги. Обновите страницу.</div>';
   }
-  
-  function showLibrary() {
-    readerView.style.display = 'none';
-    libraryView.style.display = 'block';
-    navTitle.innerText = 'Библиотека';
-    localStorage.removeItem('lib_saved_id');
-    window.scrollTo(0, 0);
-  }
-  
-  document.getElementById('btn-font-inc').onclick = () => applyFontSize(currentFontSize + 2);
-  document.getElementById('btn-font-dec').onclick = () => applyFontSize(currentFontSize - 2);
-  document.getElementById('btn-theme').onclick = () => applyTheme(!isDark);
-  document.getElementById('btn-back').onclick = showLibrary;
-  document.getElementById('btn-back-bottom').onclick = showLibrary;
-  
-  searchBox.oninput = renderList;
-  
-  filterButtons.forEach(btn => {
-    btn.onclick = () => {
-      filterButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeFilter = btn.dataset.author;
-      renderList();
-    };
+}
+
+function renderBooksList() {
+  const q = searchBox.value.trim().toLowerCase();
+  booksContainer.innerHTML = '';
+
+  const filtered = booksData.filter(item => {
+    const matchesFilter = (activeFilter === 'all') || item.author.includes(activeFilter);
+    const matchesQuery = !q || item.title.toLowerCase().includes(q) || item.author.toLowerCase().includes(q);
+    return matchesFilter && matchesQuery;
   });
-  
-  renderList();
-  
-  const savedId = localStorage.getItem('lib_saved_id');
-  if (savedId) {
-    const savedTitle = localStorage.getItem('lib_saved_title') || '';
-    const savedAuthor = localStorage.getItem('lib_saved_author') || '';
-    loadBook(savedId, savedTitle, savedAuthor);
+
+  if (filtered.length === 0) {
+    booksContainer.innerHTML = '<div class="status-msg">Ничего не найдено</div>';
+    return;
   }
+
+  filtered.forEach(book => {
+    const card = document.createElement('div');
+    card.className = 'book-card';
+    const chaptersCount = book.chapters.length;
+    const chaptersLabel = chaptersCount === 1 ? '1 глава' : `${chaptersCount} глав(ы)`;
+    card.innerHTML = `<h3>${book.title}</h3><p>${book.author} • ${chaptersLabel}</p>`;
+    card.onclick = () => showBookChapters(book);
+    booksContainer.appendChild(card);
+  });
+}
+
+function showBookChapters(book) {
+  currentBook = book;
   
+  if (book.chapters.length === 1) {
+    openChapter(0);
+    return;
+  }
+
+  libraryView.style.display = 'none';
+  readerView.style.display = 'none';
+  chapterSelectView.style.display = 'block';
+
+  navTitle.innerText = book.title;
+  selectTitle.innerText = book.title;
+  selectAuthor.innerText = book.author;
+  chaptersContainer.innerHTML = '';
+
+  book.chapters.forEach((ch, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'chapter-card-btn';
+    btn.innerHTML = `<span>${ch.title}</span><span class="chapter-arrow">→</span>`;
+    btn.onclick = () => openChapter(idx);
+    chaptersContainer.appendChild(btn);
+  });
+
+  window.scrollTo(0, 0);
+}
+
+function openChapter(index) {
+  if (!currentBook || !currentBook.chapters[index]) return;
+  currentChapterIndex = index;
+
+  localStorage.setItem('lib_last_book_id', currentBook.id);
+  localStorage.setItem('lib_last_chapter_idx', currentChapterIndex);
+
+  libraryView.style.display = 'none';
+  chapterSelectView.style.display = 'none';
+  readerView.style.display = 'block';
+
+  navTitle.innerText = currentBook.title;
+  readerBookTitle.innerText = currentBook.title;
+  readerChapterTitle.innerText = `${currentBook.author} — ${currentBook.chapters[index].title}`;
+
+  const paragraphs = currentBook.chapters[index].text.split('\n\n');
+  readerContent.innerHTML = paragraphs.map(p => `<p>${p.trim()}</p>`).join('');
+
+  btnPrevChapter.disabled = (currentChapterIndex === 0);
+  btnNextChapter.disabled = (currentChapterIndex === currentBook.chapters.length - 1);
+
+  window.scrollTo(0, 0);
+}
+
+function showLibrary() {
+  currentBook = null;
+  localStorage.removeItem('lib_last_book_id');
+  localStorage.removeItem('lib_last_chapter_idx');
+
+  readerView.style.display = 'none';
+  chapterSelectView.style.display = 'none';
+  libraryView.style.display = 'block';
+  navTitle.innerText = 'Библиотека';
+  window.scrollTo(0, 0);
+}
+
+function backToChapters() {
+  if (!currentBook) {
+    showLibrary();
+    return;
+  }
+  if (currentBook.chapters.length === 1) {
+    showLibrary();
+    return;
+  }
+  showBookChapters(currentBook);
+}
+
+btnPrevChapter.onclick = () => {
+  if (currentChapterIndex > 0) openChapter(currentChapterIndex - 1);
+};
+
+btnNextChapter.onclick = () => {
+  if (currentBook && currentChapterIndex < currentBook.chapters.length - 1) {
+    openChapter(currentChapterIndex + 1);
+  }
+};
+
+document.getElementById('btn-back-to-library').onclick = showLibrary;
+document.getElementById('btn-back-to-books').onclick = showLibrary;
+document.getElementById('btn-back-to-chapters').onclick = backToChapters;
+document.getElementById('btn-bottom-to-chapters').onclick = backToChapters;
+
+document.getElementById('btn-font-inc').onclick = () => applyFontSize(currentFontSize + 2);
+document.getElementById('btn-font-dec').onclick = () => applyFontSize(currentFontSize - 2);
+document.getElementById('btn-theme').onclick = () => applyTheme(!isDark);
+
+searchBox.oninput = renderBooksList;
+
+filterButtons.forEach(btn => {
+  btn.onclick = () => {
+    filterButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.author;
+    renderBooksList();
+  };
+});
+
+initLibrary();
