@@ -99,19 +99,21 @@ function initReaderSettings() {
 }
 
 function applyReaderFontSize() {
-  document.documentElement.style.setProperty("--reader-size", currentFontSizePx + "px");
+  if (readerTextArea) {
+    readerTextArea.style.fontSize = currentFontSizePx + "px";
+  }
   localStorage.setItem("reader_font_size", currentFontSizePx.toString());
 }
 
 btnFontInc.addEventListener("click", () => {
-  if (currentFontSizePx < 36) {
+  if (currentFontSizePx < 40) {
     currentFontSizePx += 2;
     applyReaderFontSize();
   }
 });
 
 btnFontDec.addEventListener("click", () => {
-  if (currentFontSizePx > 18) {
+  if (currentFontSizePx > 16) {
     currentFontSizePx -= 2;
     applyReaderFontSize();
   }
@@ -302,6 +304,7 @@ async function showReaderView() {
     });
     readerTextArea.appendChild(fragment);
 
+    applyReaderFontSize();
     restoreReadingProgress(currentBook.id);
   } catch (err) {
     readerStatus.hidden = false;

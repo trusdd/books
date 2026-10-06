@@ -11,7 +11,6 @@
   
     --font-base: -apple-system, BlinkMacSystemFont, "Segoe UI", "Georgia", serif;
     --font-reader: "Georgia", "Times New Roman", serif;
-    --reader-size: 1.375rem;
   
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -75,8 +74,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.75rem;
-    min-height: 4.25rem;
+    gap: 0.5rem;
+    min-height: 4.5rem;
+    flex-wrap: wrap;
   }
   
   .header-logo {
@@ -93,8 +93,10 @@
   .header-actions {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
     flex-shrink: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
   
   .btn-theme {
@@ -108,7 +110,7 @@
   
   .reader-toolbar {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.4rem;
     flex-shrink: 0;
   }
   
@@ -271,7 +273,7 @@
   .view-navigation-reader {
     position: -webkit-sticky;
     position: sticky;
-    top: calc(var(--safe-top) + 4.25rem);
+    top: calc(var(--safe-top) + 4.5rem);
     background-color: var(--color-bg);
     padding: 0.5rem 0;
     z-index: 90;
@@ -307,12 +309,13 @@
   }
   
   .btn-tool {
-    min-width: 3.5rem;
+    min-width: auto;
     min-height: 3.5rem;
-    padding: 0;
-    font-size: 1.35rem;
+    padding: 0 0.9rem;
+    font-size: 1.05rem;
     border-color: var(--color-accent);
     color: var(--color-accent);
+    white-space: nowrap;
   }
   
   .btn-back {
@@ -412,8 +415,8 @@
   
   .reader-text-area {
     font-family: var(--font-reader);
-    font-size: var(--reader-size);
-    line-height: 1.7;
+    font-size: 22px;
+    line-height: 1.6;
     color: var(--color-text);
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -421,9 +424,12 @@
   }
   
   .reader-text-area p {
-    margin-bottom: 1.5em;
-    text-indent: 1.75em;
-    text-align: justify;
+    margin-bottom: 1.25em;
+    text-align: left;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    word-spacing: normal;
+    letter-spacing: normal;
   }
   
   .reader-footer-nav {
@@ -477,5 +483,19 @@
   @media (max-width: 380px) {
     .view-navigation .btn {
       width: 100%;
+    }
+  
+    .btn-tool {
+      font-size: 0.95rem;
+      padding: 0 0.6rem;
+    }
+  
+    .header-logo {
+      font-size: 1.15rem;
+    }
+  
+    .btn-theme {
+      font-size: 0.9rem;
+      padding: 0 0.7rem;
     }
   }
