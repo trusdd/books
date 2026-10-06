@@ -1,202 +1,352 @@
-let booksData = [];
+let allBooks = [];
 let currentBook = null;
-let currentChapterIndex = 0;
+let currentFontSizePx = 22;
+let scrollSaveTimer = null;
 
-let currentFontSize = parseInt(localStorage.getItem('lib_font') || '22');
-let isDark = localStorage.getItem('lib_theme') === 'dark';
-let activeFilter = 'all';
+const viewCatalog = document.getElementById("view-catalog");
+const viewDetails = document.getElementById("view-details");
+const viewReader = document.getElementById("view-reader");
 
-const libraryView = document.getElementById('library-view');
-const chapterSelectView = document.getElementById('chapter-select-view');
-const readerView = document.getElementById('reader-view');
+const searchInput = document.getElementById("search-input");
+const authorFilter = document.getElementById("author-filter");
+const btnResetFilter = document.getElementById("btn-reset-filter");
+const catalogList = document.getElementById("catalog-list");
+const catalogCounter = document.getElementById("catalog-counter");
+const catalogError = document.getElementById("catalog-error");
 
-const booksContainer = document.getElementById('books-container');
-const chaptersContainer = document.getElementById('chapters-container');
-const searchBox = document.getElementById('search-box');
-const filterButtons = document.querySelectorAll('.filter-chip');
+const headerTitle = document.getElementById("header-title");
+const readerControls = document.getElementById("reader-controls");
+const btnFontDec = document.getElementById("btn-font-dec");
+const btnFontInc = document.getElementById("btn-font-inc");
 
-const navTitle = document.getElementById('nav-title');
-const selectTitle = document.getElementById('select-title');
-const selectAuthor = document.getElementById('select-author');
+const btnBackToCatalog = document.getElementById("btn-back-to-catalog");
+const btnStartReading = document.getElementById("btn-start-reading");
+const detailTitle = document.getElementById("detail-title");
+const detailAuthor = document.getElementById("detail-author");
+const detailMeta = document.getElementById("detail-meta");
+const detailDescription = document.getElementById("detail-description");
+const detailProgress = document.getElementById("detail-progress");
+const detailProgressText = document.getElementById("detail-progress-text");
 
-const readerBookTitle = document.getElementById('reader-book-title');
-const readerChapterTitle = document.getElementById('reader-chapter-title');
-const readerContent = document.getElementById('reader-content');
+const btnBackToDetails = document.getElementById("btn-back-to-details");
+const btnQuickCatalog = document.getElementById("btn-quick-catalog");
+const btnReaderFooterBack = document.getElementById("btn-reader-footer-back");
+const readerWorkTitle = document.getElementById("reader-work-title");
+const readerWorkAuthor = document.getElementById("reader-work-author");
+const readerTextArea = document.getElementById("reader-text-area");
+const readerStatus = document.getElementById("reader-status");
 
-const btnPrevChapter = document.getElementById('btn-prev-chapter');
-const btnNextChapter = document.getElementById('btn-next-chapter');
+const btnScrollTop = document.getElementById("btn-scroll-top");
 
-function applyFontSize(val) {
-  currentFontSize = Math.min(Math.max(val, 16), 36);
-  document.documentElement.style.setProperty('--font-size', `${currentFontSize}px`);
-  localStorage.setItem('lib_font', currentFontSize);
+function getScrollKey(bookId) {
+  return "scroll_pos_" + bookId;
 }
 
-function applyTheme(dark) {
-  isDark = dark;
-  if (dark) {
-    document.body.classList.add('dark');
-    localStorage.setItem('lib_theme', 'dark');
-  } else {
-    document.body.classList.remove('dark');
-    localStorage.setItem('lib_theme', 'light');
+function getProgressPercent(bookId) {
+  const saved = localStorage.getItem(getScrollKey(bookId));
+  if (!saved) return 0;
+  const savedY = parseInt(saved, 10);
+  if (!savedY || savedY < 200) return 0;
+  const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+  if (totalHeight <= 0) return 0;
+  const percent = Math.round((savedY / totalHeight) * 100);
+  return Math.min(100, Math.max(0, percent));
+}
+
+function hasProgress(bookId) {
+  return getProgressPercent(bookId) > 1;
+}
+
+function initReaderSettings() {
+  const savedSize = localStorage.getItem("reader_font_size");
+  if (savedSize) {
+    currentFontSizePx = parseInt(savedSize, 10);
   }
+  applyReaderFontSize();
 }
 
-applyFontSize(currentFontSize);
-applyTheme(isDark);
+function applyReaderFontSize() {
+  document.documentElement.style.setProperty("--reader-size", currentFontSizePx + "px");
+  localStorage.setItem("reader_font_size", currentFontSizePx.toString());
+}
 
-async function initLibrary() {
+btnFontInc.addEventListener("click", () => {
+  if (currentFontSizePx < 36) {
+    currentFontSizePx += 2;
+    applyReaderFontSize();
+  }
+});
+
+btnFontDec.addEventListener("click", () => {
+  if (currentFontSizePx > 18) {
+    currentFontSizePx -= 2;
+    applyReaderFontSize();
+  }
+});
+
+async function loadCatalogData() {
   try {
-    const res = await fetch('books.json');
-    if (!res.ok) throw new Error('Ошибка загрузки books.json');
-    booksData = await res.json();
-    renderBooksList();
-
-    const savedBookId = localStorage.getItem('lib_last_book_id');
-    const savedChapterIdx = parseInt(localStorage.getItem('lib_last_chapter_idx') || '0');
-    if (savedBookId) {
-      const b = booksData.find(item => item.id === savedBookId);
-      if (b) {
-        currentBook = b;
-        openChapter(savedChapterIdx);
-      }
+    const response = await fetch("books.json");
+    if (!response.ok) {
+      throw new Error("Не удалось получить файл каталога");
     }
-  } catch (e) {
-    booksContainer.innerHTML = '<div class="status-msg">Не удалось загрузить книги. Обновите страницу.</div>';
+    allBooks = await response.json();
+    populateAuthorsDropdown(allBooks);
+    renderCatalog();
+  } catch (error) {
+    catalogError.hidden = false;
+    catalogError.textContent = "Не удалось загрузить список книг. Проверьте соединение или обновите страницу.";
+    catalogCounter.textContent = "";
   }
 }
 
-function renderBooksList() {
-  const q = searchBox.value.trim().toLowerCase();
-  booksContainer.innerHTML = '';
+function populateAuthorsDropdown(books) {
+  const authorSet = new Set();
+  books.forEach(b => {
+    if (b.author) authorSet.add(b.author.trim());
+  });
+  const sortedAuthors = Array.from(authorSet).sort((a, b) => a.localeCompare(b, "ru"));
 
-  const filtered = booksData.filter(item => {
-    const matchesFilter = (activeFilter === 'all') || item.author.includes(activeFilter);
-    const matchesQuery = !q || item.title.toLowerCase().includes(q) || item.author.toLowerCase().includes(q);
-    return matchesFilter && matchesQuery;
+  sortedAuthors.forEach(author => {
+    const opt = document.createElement("option");
+    opt.value = author;
+    opt.textContent = author;
+    authorFilter.appendChild(opt);
+  });
+}
+
+function updateResetFilterVisibility() {
+  if (authorFilter.value === "all") {
+    btnResetFilter.hidden = true;
+  } else {
+    btnResetFilter.hidden = false;
+  }
+}
+
+function renderCatalog() {
+  const query = searchInput.value.trim().toLowerCase();
+  const selectedAuthor = authorFilter.value;
+
+  const filtered = allBooks.filter(book => {
+    const matchesAuthor = (selectedAuthor === "all") || (book.author === selectedAuthor);
+    const matchesQuery = !query ||
+      book.title.toLowerCase().includes(query) ||
+      book.author.toLowerCase().includes(query);
+    return matchesAuthor && matchesQuery;
   });
 
+  catalogList.innerHTML = "";
+  catalogCounter.textContent = `Найдено книг: ${filtered.length}`;
+
   if (filtered.length === 0) {
-    booksContainer.innerHTML = '<div class="status-msg">Ничего не найдено</div>';
+    const emptyMsg = document.createElement("div");
+    emptyMsg.className = "status-banner";
+    emptyMsg.textContent = "Книги не найдены. Попробуйте изменить запрос.";
+    catalogList.appendChild(emptyMsg);
+    updateResetFilterVisibility();
     return;
   }
 
   filtered.forEach(book => {
-    const card = document.createElement('div');
-    card.className = 'book-card';
-    const chaptersCount = book.chapters.length;
-    const chaptersLabel = chaptersCount === 1 ? '1 глава' : `${chaptersCount} глав(ы)`;
-    card.innerHTML = `<h3>${book.title}</h3><p>${book.author} • ${chaptersLabel}</p>`;
-    card.onclick = () => showBookChapters(book);
-    booksContainer.appendChild(card);
-  });
-}
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "book-item-card";
 
-function showBookChapters(book) {
-  currentBook = book;
-  
-  if (book.chapters.length === 1) {
-    openChapter(0);
-    return;
-  }
+    const titleEl = document.createElement("div");
+    titleEl.className = "item-card-title";
+    titleEl.textContent = book.title;
 
-  libraryView.style.display = 'none';
-  readerView.style.display = 'none';
-  chapterSelectView.style.display = 'block';
+    const authorEl = document.createElement("div");
+    authorEl.className = "item-card-author";
+    authorEl.textContent = book.author;
 
-  navTitle.innerText = book.title;
-  selectTitle.innerText = book.title;
-  selectAuthor.innerText = book.author;
-  chaptersContainer.innerHTML = '';
+    const metaEl = document.createElement("div");
+    metaEl.className = "item-card-meta";
+    metaEl.textContent = `${book.genre} • ${book.year} год`;
 
-  book.chapters.forEach((ch, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'chapter-card-btn';
-    btn.innerHTML = `<span>${ch.title}</span><span class="chapter-arrow">→</span>`;
-    btn.onclick = () => openChapter(idx);
-    chaptersContainer.appendChild(btn);
+    card.appendChild(titleEl);
+    card.appendChild(authorEl);
+    card.appendChild(metaEl);
+
+    if (hasProgress(book.id)) {
+      const progressEl = document.createElement("div");
+      progressEl.className = "item-card-progress";
+      progressEl.textContent = `Вы остановились здесь • ${getProgressPercent(book.id)}%`;
+      card.appendChild(progressEl);
+    }
+
+    card.addEventListener("click", () => showDetailsView(book));
+
+    catalogList.appendChild(card);
   });
 
-  window.scrollTo(0, 0);
+  updateResetFilterVisibility();
 }
 
-function openChapter(index) {
-  if (!currentBook || !currentBook.chapters[index]) return;
-  currentChapterIndex = index;
+searchInput.addEventListener("input", renderCatalog);
+authorFilter.addEventListener("change", renderCatalog);
 
-  localStorage.setItem('lib_last_book_id', currentBook.id);
-  localStorage.setItem('lib_last_chapter_idx', currentChapterIndex);
-
-  libraryView.style.display = 'none';
-  chapterSelectView.style.display = 'none';
-  readerView.style.display = 'block';
-
-  navTitle.innerText = currentBook.title;
-  readerBookTitle.innerText = currentBook.title;
-  readerChapterTitle.innerText = `${currentBook.author} — ${currentBook.chapters[index].title}`;
-
-  const paragraphs = currentBook.chapters[index].text.split('\n\n');
-  readerContent.innerHTML = paragraphs.map(p => `<p>${p.trim()}</p>`).join('');
-
-  btnPrevChapter.disabled = (currentChapterIndex === 0);
-  btnNextChapter.disabled = (currentChapterIndex === currentBook.chapters.length - 1);
-
-  window.scrollTo(0, 0);
-}
-
-function showLibrary() {
-  currentBook = null;
-  localStorage.removeItem('lib_last_book_id');
-  localStorage.removeItem('lib_last_chapter_idx');
-
-  readerView.style.display = 'none';
-  chapterSelectView.style.display = 'none';
-  libraryView.style.display = 'block';
-  navTitle.innerText = 'Библиотека';
-  window.scrollTo(0, 0);
-}
-
-function backToChapters() {
-  if (!currentBook) {
-    showLibrary();
-    return;
-  }
-  if (currentBook.chapters.length === 1) {
-    showLibrary();
-    return;
-  }
-  showBookChapters(currentBook);
-}
-
-btnPrevChapter.onclick = () => {
-  if (currentChapterIndex > 0) openChapter(currentChapterIndex - 1);
-};
-
-btnNextChapter.onclick = () => {
-  if (currentBook && currentChapterIndex < currentBook.chapters.length - 1) {
-    openChapter(currentChapterIndex + 1);
-  }
-};
-
-document.getElementById('btn-back-to-library').onclick = showLibrary;
-document.getElementById('btn-back-to-books').onclick = showLibrary;
-document.getElementById('btn-back-to-chapters').onclick = backToChapters;
-document.getElementById('btn-bottom-to-chapters').onclick = backToChapters;
-
-document.getElementById('btn-font-inc').onclick = () => applyFontSize(currentFontSize + 2);
-document.getElementById('btn-font-dec').onclick = () => applyFontSize(currentFontSize - 2);
-document.getElementById('btn-theme').onclick = () => applyTheme(!isDark);
-
-searchBox.oninput = renderBooksList;
-
-filterButtons.forEach(btn => {
-  btn.onclick = () => {
-    filterButtons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    activeFilter = btn.dataset.author;
-    renderBooksList();
-  };
+btnResetFilter.addEventListener("click", () => {
+  authorFilter.value = "all";
+  renderCatalog();
 });
 
-initLibrary();
+function showDetailsView(book) {
+  currentBook = book;
+
+  viewCatalog.hidden = true;
+  viewReader.hidden = true;
+  viewDetails.hidden = false;
+  readerControls.hidden = true;
+
+  headerTitle.textContent = "О книге";
+  detailTitle.textContent = book.title;
+  detailAuthor.textContent = book.author;
+  detailMeta.textContent = `Жанр: ${book.genre} | Год издания: ${book.year}`;
+  detailDescription.textContent = book.description;
+
+  if (hasProgress(book.id)) {
+    detailProgress.hidden = false;
+    detailProgressText.textContent = `Вы уже начали читать эту книгу. Продолжить можно с ${getProgressPercent(book.id)}%.`;
+    btnStartReading.textContent = "Продолжить чтение";
+  } else {
+    detailProgress.hidden = true;
+    btnStartReading.textContent = "Читать произведение";
+  }
+
+  window.scrollTo(0, 0);
+  updateScrollTopButton();
+}
+
+function showCatalogView() {
+  viewDetails.hidden = true;
+  viewReader.hidden = true;
+  viewCatalog.hidden = false;
+  readerControls.hidden = true;
+
+  headerTitle.textContent = "Русская классика";
+  window.scrollTo(0, 0);
+  renderCatalog();
+  updateScrollTopButton();
+}
+
+btnBackToCatalog.addEventListener("click", showCatalogView);
+
+async function showReaderView() {
+  if (!currentBook) return;
+
+  viewCatalog.hidden = true;
+  viewDetails.hidden = true;
+  viewReader.hidden = false;
+  readerControls.hidden = false;
+
+  headerTitle.textContent = currentBook.title;
+  readerWorkTitle.textContent = currentBook.title;
+  readerWorkAuthor.textContent = currentBook.author;
+
+  readerTextArea.innerHTML = "";
+  readerStatus.hidden = false;
+  readerStatus.textContent = "Загрузка текста книги...";
+
+  try {
+    const res = await fetch(currentBook.textUrl);
+    if (!res.ok) {
+      throw new Error("Текст книги недоступен");
+    }
+    const rawText = await res.text();
+    readerStatus.hidden = true;
+
+    const paragraphs = rawText.split(/\n\s*\n/);
+    const fragment = document.createDocumentFragment();
+    paragraphs.forEach(pText => {
+      const trimmed = pText.trim();
+      if (trimmed.length > 0) {
+        const pElem = document.createElement("p");
+        pElem.textContent = trimmed;
+        fragment.appendChild(pElem);
+      }
+    });
+    readerTextArea.appendChild(fragment);
+
+    restoreReadingProgress(currentBook.id);
+  } catch (err) {
+    readerStatus.hidden = false;
+    readerStatus.textContent = "Не удалось открыть текст книги. Убедитесь, что текстовый файл добавлен в каталог.";
+  }
+
+  updateScrollTopButton();
+}
+
+btnStartReading.addEventListener("click", showReaderView);
+
+btnBackToDetails.addEventListener("click", () => {
+  saveReadingProgress();
+  showDetailsView(currentBook);
+});
+
+btnQuickCatalog.addEventListener("click", () => {
+  saveReadingProgress();
+  showCatalogView();
+});
+
+btnReaderFooterBack.addEventListener("click", () => {
+  saveReadingProgress();
+  showDetailsView(currentBook);
+});
+
+function saveReadingProgress() {
+  if (currentBook && !viewReader.hidden) {
+    const scrollKey = getScrollKey(currentBook.id);
+    const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+    localStorage.setItem(scrollKey, scrollY.toString());
+  }
+}
+
+function restoreReadingProgress(bookId) {
+  const scrollKey = getScrollKey(bookId);
+  const savedY = localStorage.getItem(scrollKey);
+
+  const applyScroll = () => {
+    if (savedY) {
+      const target = parseInt(savedY, 10);
+      if (target > 0) {
+        window.scrollTo(0, target);
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  };
+
+  requestAnimationFrame(() => {
+    applyScroll();
+    requestAnimationFrame(applyScroll);
+    setTimeout(applyScroll, 150);
+  });
+}
+
+window.addEventListener("scroll", () => {
+  if (!viewReader.hidden && currentBook) {
+    if (scrollSaveTimer) clearTimeout(scrollSaveTimer);
+    scrollSaveTimer = setTimeout(saveReadingProgress, 400);
+  }
+  updateScrollTopButton();
+}, { passive: true });
+
+function updateScrollTopButton() {
+  if (window.scrollY > 600) {
+    btnScrollTop.hidden = false;
+  } else {
+    btnScrollTop.hidden = true;
+  }
+}
+
+btnScrollTop.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+window.addEventListener("beforeunload", () => {
+  saveReadingProgress();
+});
+
+initReaderSettings();
+loadCatalogData();

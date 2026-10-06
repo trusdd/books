@@ -2,71 +2,86 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-  <title>Библиотека</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#faf8f3">
+  <title>Русская классика</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <div class="header-left">
-      <span class="header-title" id="nav-title">Библиотека</span>
-    </div>
-    <div class="controls">
-      <button class="btn btn-icon" id="btn-font-dec" aria-label="Уменьшить шрифт">A−</button>
-      <button class="btn btn-icon" id="btn-font-inc" aria-label="Увеличить шрифт">A+</button>
-      <button class="btn btn-icon" id="btn-theme" aria-label="Сменить тему">🌓</button>
+
+  <header class="app-header">
+    <div class="header-inner">
+      <span class="header-logo" id="header-title">Русская классика</span>
+      <div class="reader-toolbar" id="reader-controls" hidden>
+        <button type="button" class="btn btn-tool" id="btn-font-dec" aria-label="Уменьшить шрифт">А−</button>
+        <button type="button" class="btn btn-tool" id="btn-font-inc" aria-label="Увеличить шрифт">А+</button>
+      </div>
     </div>
   </header>
 
-  <main>
-    <section id="library-view">
-      <div class="search-wrap">
-        <input type="text" class="search-input" id="search-box" placeholder="Поиск книги или автора...">
+  <main class="app-main">
+    <section id="view-catalog" class="view-panel">
+      <div class="search-section">
+        <label for="search-input" class="field-label">Поиск по книгам и авторам:</label>
+        <input type="search" id="search-input" class="search-box" placeholder="Например: Чехов или Степь" autocomplete="off">
       </div>
 
-      <div class="filter-bar" id="filters-container">
-        <button class="filter-chip active" data-author="all">Все книги</button>
-        <button class="filter-chip" data-author="Пушкин">Пушкин</button>
-        <button class="filter-chip" data-author="Чехов">Чехов</button>
-        <button class="filter-chip" data-author="Толстой">Толстой</button>
-        <button class="filter-chip" data-author="Гоголь">Гоголь</button>
-        <button class="filter-chip" data-author="Достоевский">Достоевский</button>
-        <button class="filter-chip" data-author="Тургенев">Тургенев</button>
+      <div class="filter-section">
+        <label for="author-filter" class="field-label">Выбор автора:</label>
+        <div class="select-wrapper">
+          <select id="author-filter" class="author-dropdown">
+            <option value="all">Все авторы (показать всё)</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-reset-filter" id="btn-reset-filter" hidden>Сбросить фильтр</button>
       </div>
 
-      <div class="book-list" id="books-container"></div>
+      <div class="catalog-summary" id="catalog-counter" aria-live="polite"></div>
+      <div class="book-card-list" id="catalog-list"></div>
+      <div id="catalog-error" class="error-banner" hidden></div>
     </section>
 
-    <section id="chapter-select-view">
-      <button class="btn btn-nav" id="btn-back-to-library">← К списку книг</button>
-      <h1 class="book-heading" id="select-title"></h1>
-      <div class="book-author" id="select-author"></div>
-      
-      <h2 class="chapters-title">Выберите главу для чтения:</h2>
-      <div class="chapters-list" id="chapters-container"></div>
+    <section id="view-details" class="view-panel" hidden>
+      <nav class="view-navigation">
+        <button type="button" class="btn btn-back" id="btn-back-to-catalog">← Назад к каталогу</button>
+      </nav>
+
+      <article class="book-detail-card">
+        <h1 class="book-detail-title" id="detail-title"></h1>
+        <p class="book-detail-author" id="detail-author"></p>
+        <div class="book-detail-meta" id="detail-meta"></div>
+        <div class="book-detail-progress" id="detail-progress" hidden>
+          <p class="progress-text" id="detail-progress-text"></p>
+        </div>
+        <div class="book-detail-description">
+          <h2 class="description-heading">О произведении</h2>
+          <p id="detail-description"></p>
+        </div>
+        <button type="button" class="btn btn-action-large" id="btn-start-reading">Читать произведение</button>
+      </article>
     </section>
 
-    <section id="reader-view">
-      <div class="reader-top-nav">
-        <button class="btn btn-nav" id="btn-back-to-chapters">← К главам</button>
-        <button class="btn btn-nav" id="btn-back-to-books">К списку книг</button>
+    <section id="view-reader" class="view-panel" hidden>
+      <nav class="view-navigation view-navigation-reader">
+        <button type="button" class="btn btn-back" id="btn-back-to-details">← К описанию</button>
+        <button type="button" class="btn btn-secondary" id="btn-quick-catalog">Все книги</button>
+      </nav>
+
+      <header class="reader-heading-block">
+        <h1 class="reader-work-title" id="reader-work-title"></h1>
+        <p class="reader-work-author" id="reader-work-author"></p>
+      </header>
+
+      <div id="reader-status" class="status-banner" hidden></div>
+      <article class="reader-text-area" id="reader-text-area" tabindex="0"></article>
+
+      <div class="reader-footer-nav">
+        <button type="button" class="btn btn-action-large" id="btn-reader-footer-back">← Завершить чтение и вернуться</button>
       </div>
-
-      <div class="reader-header-info">
-        <h1 class="reader-book-title" id="reader-book-title"></h1>
-        <div class="reader-chapter-title" id="reader-chapter-title"></div>
-      </div>
-
-      <article class="book-content" id="reader-content"></article>
-
-      <div class="chapter-navigation">
-        <button class="btn btn-chapter-step" id="btn-prev-chapter">← Предыдущая глава</button>
-        <button class="btn btn-chapter-step" id="btn-next-chapter">Следующая глава →</button>
-      </div>
-
-      <button class="btn btn-nav btn-full" id="btn-bottom-to-chapters">← Вернуться к оглавлению</button>
     </section>
   </main>
+
+  <button type="button" class="btn-scroll-top" id="btn-scroll-top" aria-label="Наверх" hidden>↑ Наверх</button>
 
   <script src="script.js"></script>
 </body>
