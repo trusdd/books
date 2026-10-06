@@ -33,6 +33,15 @@
 
   <main class="app-main">
     <section id="view-catalog" class="view-panel">
+
+      <div class="continue-block" id="continue-block" hidden>
+        <div class="continue-label">Продолжить чтение</div>
+        <div class="continue-title" id="continue-title"></div>
+        <div class="continue-author" id="continue-author"></div>
+        <div class="continue-progress" id="continue-progress"></div>
+        <button type="button" class="btn btn-action-large" id="btn-continue-reading">▶ Продолжить</button>
+      </div>
+
       <div class="search-section">
         <label for="search-input" class="field-label">Поиск по книгам и авторам:</label>
         <input type="search" id="search-input" class="search-box" placeholder="Например: Чехов или Степь" autocomplete="off">

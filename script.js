@@ -14,6 +14,12 @@ const catalogList = document.getElementById("catalog-list");
 const catalogCounter = document.getElementById("catalog-counter");
 const catalogError = document.getElementById("catalog-error");
 
+const continueBlock = document.getElementById("continue-block");
+const continueTitle = document.getElementById("continue-title");
+const continueAuthor = document.getElementById("continue-author");
+const continueProgress = document.getElementById("continue-progress");
+const btnContinueReading = document.getElementById("btn-continue-reading");
+
 const headerTitle = document.getElementById("header-title");
 const readerControls = document.getElementById("reader-controls");
 const btnFontDec = document.getElementById("btn-font-dec");
@@ -128,6 +134,7 @@ async function loadCatalogData() {
     allBooks = await response.json();
     populateAuthorsDropdown(allBooks);
     renderCatalog();
+    renderContinueBlock();
   } catch (error) {
     catalogError.hidden = false;
     catalogError.textContent = "Не удалось загрузить список книг. Проверьте соединение или обновите страницу.";
@@ -157,6 +164,39 @@ function updateResetFilterVisibility() {
     btnResetFilter.hidden = false;
   }
 }
+
+function renderContinueBlock() {
+  const lastBookId = localStorage.getItem("last_book_id");
+  if (!lastBookId) {
+    continueBlock.hidden = true;
+    return;
+  }
+
+  const book = allBooks.find(b => b.id === lastBookId);
+  if (!book) {
+    continueBlock.hidden = true;
+    return;
+  }
+
+  const percent = getProgressPercent(book.id);
+  if (percent < 1) {
+    continueBlock.hidden = true;
+    return;
+  }
+
+  continueTitle.textContent = book.title;
+  continueAuthor.textContent = book.author;
+  continueProgress.textContent = `Вы остановились на ${percent}%`;
+  continueBlock.hidden = false;
+}
+
+btnContinueReading.addEventListener("click", () => {
+  const lastBookId = localStorage.getItem("last_book_id");
+  if (!lastBookId) return;
+  const book = allBooks.find(b => b.id === lastBookId);
+  if (!book) return;
+  showReaderView(book);
+});
 
 function renderCatalog() {
   const query = searchInput.value.trim().toLowerCase();
@@ -262,29 +302,33 @@ function showCatalogView() {
   headerTitle.textContent = "Приятного чтения!";
   window.scrollTo(0, 0);
   renderCatalog();
+  renderContinueBlock();
   updateScrollTopButton();
 }
 
 btnBackToCatalog.addEventListener("click", showCatalogView);
 
-async function showReaderView() {
-  if (!currentBook) return;
+async function showReaderView(book) {
+  if (!book) return;
+  currentBook = book;
+
+  localStorage.setItem("last_book_id", book.id);
 
   viewCatalog.hidden = true;
   viewDetails.hidden = true;
   viewReader.hidden = false;
   readerControls.hidden = false;
 
-  headerTitle.textContent = currentBook.title;
-  readerWorkTitle.textContent = currentBook.title;
-  readerWorkAuthor.textContent = currentBook.author;
+  headerTitle.textContent = book.title;
+  readerWorkTitle.textContent = book.title;
+  readerWorkAuthor.textContent = book.author;
 
   readerTextArea.innerHTML = "";
   readerStatus.hidden = false;
   readerStatus.textContent = "Загрузка текста книги...";
 
   try {
-    const encodedUrl = encodeURI(currentBook.textUrl);
+    const encodedUrl = encodeURI(book.textUrl);
     const res = await fetch(encodedUrl);
     if (!res.ok) {
       throw new Error("Текст книги недоступен");
@@ -305,7 +349,7 @@ async function showReaderView() {
     readerTextArea.appendChild(fragment);
 
     applyReaderFontSize();
-    restoreReadingProgress(currentBook.id);
+    restoreReadingProgress(book.id);
   } catch (err) {
     readerStatus.hidden = false;
     readerStatus.textContent = "Не удалось открыть текст книги. Убедитесь, что текстовый файл добавлен в каталог.";
@@ -314,7 +358,9 @@ async function showReaderView() {
   updateScrollTopButton();
 }
 
-btnStartReading.addEventListener("click", showReaderView);
+btnStartReading.addEventListener("click", () => {
+  showReaderView(currentBook);
+});
 
 btnBackToDetails.addEventListener("click", () => {
   saveReadingProgress();
