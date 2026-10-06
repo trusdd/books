@@ -1,31 +1,56 @@
 const CATALOG = [
-    { id: "Евгений_Онегин_(Пушкин)", title: "Евгений Онегин", author: "Александр Пушкин" },
-    { id: "Капитанская_дочка_(Пушкин)", title: "Капитанская дочка", author: "Александр Пушкин" },
-    { id: "Пиковая_дама_(Пушкин)", title: "Пиковая дама", author: "Александр Пушкин" },
     { id: "Метель_(Пушкин)", title: "Метель", author: "Александр Пушкин" },
     { id: "Выстрел_(Пушкин)", title: "Выстрел", author: "Александр Пушкин" },
+    { id: "Гробовщик_(Пушкин)", title: "Гробовщик", author: "Александр Пушкин" },
     { id: "Станционный_смотритель_(Пушкин)", title: "Станционный смотритель", author: "Александр Пушкин" },
+    { id: "Барышня-крестьянка_(Пушкин)", title: "Барышня-крестьянка", author: "Александр Пушкин" },
+    { id: "Пиковая_дама_(Пушкин)", title: "Пиковая дама", author: "Александр Пушкин" },
+    { id: "Капитанская_дочка_(Пушкин)", title: "Капитанская дочка", author: "Александр Пушкин" },
+    { id: "Медный_всадник_(Пушкин)", title: "Медный всадник", author: "Александр Пушкин" },
+  
     { id: "Палата_№_6_(Чехов)", title: "Палата № 6", author: "Антон Чехов" },
     { id: "Дама_с_собачкой_(Чехов)", title: "Дама с собачкой", author: "Антон Чехов" },
     { id: "Человек_в_футляре_(Чехов)", title: "Человек в футляре", author: "Антон Чехов" },
     { id: "Хамелеон_(Чехов)", title: "Хамелеон", author: "Антон Чехов" },
     { id: "Толстый_и_тонкий_(Чехов)", title: "Толстый и тонкий", author: "Антон Чехов" },
+    { id: "Смерть_чиновника_(Чехов)", title: "Смерть чиновника", author: "Антон Чехов" },
+    { id: "Каштанка_(Чехов)", title: "Каштанка", author: "Антон Чехов" },
+    { id: "Крыжовник_(Чехов)", title: "Крыжовник", author: "Антон Чехов" },
+    { id: "О_любви_(Чехов)", title: "О любви", author: "Антон Чехов" },
+    { id: "Студент_(Чехов)", title: "Студент", author: "Антон Чехов" },
+  
     { id: "Смерть_Ивана_Ильича_(Толстой)", title: "Смерть Ивана Ильича", author: "Лев Толстой" },
     { id: "Кавказский_пленник_(Толстой)", title: "Кавказский пленник", author: "Лев Толстой" },
+    { id: "После_бала_(Толстой)", title: "После бала", author: "Лев Толстой" },
     { id: "Филипок_(Толстой)", title: "Филипок", author: "Лев Толстой" },
+    { id: "Хаджи-Мурат_(Толстой)", title: "Хаджи-Мурат", author: "Лев Толстой" },
+    { id: "Отец_Сергий_(Толстой)", title: "Отец Сергий", author: "Лев Толстой" },
+  
     { id: "Шинель_(Гоголь)", title: "Шинель", author: "Николай Гоголь" },
     { id: "Нос_(Гоголь)", title: "Нос", author: "Николай Гоголь" },
-    { id: "Тарас_Бульба_(Гоголь)", title: "Тарас Бульба", author: "Николай Гоголь" },
+    { id: "Портрет_(Гоголь)", title: "Портрет", author: "Николай Гоголь" },
+    { id: "Коляска_(Гоголь)", title: "Коляска", author: "Николай Гоголь" },
     { id: "Вий_(Гоголь)", title: "Вий", author: "Николай Гоголь" },
+    { id: "Тарас_Бульба_(Гоголь)", title: "Тарас Бульба", author: "Николай Гоголь" },
+  
     { id: "Белые_ночи_(Достоевский)", title: "Белые ночи", author: "Фёдор Достоевский" },
-    { id: "Бедные_люди_(Достоевский)", title: "Бедные люди", author: "Фёдор Достоевский" },
-    { id: "Игрок_(Достоевский)", title: "Игрок", author: "Фёдор Достоевский" },
-    { id: "Герой_нашего_времени_(Лермонтов)", title: "Герой нашего времени", author: "Михаил Лермонтов" },
-    { id: "Мцыри_(Лермонтов)", title: "Мцыри", author: "Михаил Лермонтов" },
+    { id: "Мальчик_у_Христа_на_ёлке_(Достоевский)", title: "Мальчик у Христа на ёлке", author: "Фёдор Достоевский" },
+    { id: "Кроткая_(Достоевский)", title: "Кроткая", author: "Фёдор Достоевский" },
+    { id: "Мужик_Марей_(Достоевский)", title: "Мужик Марей", author: "Фёдор Достоевский" },
+  
     { id: "Муму_(Тургенев)", title: "Муму", author: "Иван Тургенев" },
     { id: "Ася_(Тургенев)", title: "Ася", author: "Иван Тургенев" },
-    { id: "Первая_любовь_(Тургенев)", title: "Первая любовь", author: "Иван Тургенев" },
-    { id: "Отцы_и_дети_(Тургенев)", title: "Отцы и дети", author: "Иван Тургенев" }
+    { id: "Бежин_луг_(Тургенев)", title: "Бежин луг", author: "Иван Тургенев" },
+    { id: "Бирюк_(Тургенев)", title: "Бирюк", author: "Иван Тургенев" },
+    { id: "Певцы_(Тургенев)", title: "Певцы", author: "Иван Тургенев" },
+  
+    { id: "Бэла_(Лермонтов)", title: "Герой нашего времени: Бэла", author: "Михаил Лермонтов" },
+    { id: "Максим_Максимыч_(Лермонтов)", title: "Герой нашего времени: Максим Максимыч", author: "Михаил Лермонтов" },
+    { id: "Тамань_(Лермонтов)", title: "Герой нашего времени: Тамань", author: "Михаил Лермонтов" },
+    { id: "Княжна_Мери_(Лермонтов)", title: "Герой нашего времени: Княжна Мери", author: "Михаил Лермонтов" },
+    { id: "Фаталист_(Лермонтов)", title: "Герой нашего времени: Фаталист", author: "Михаил Лермонтов" },
+    { id: "Мцыри_(Лермонтов)", title: "Мцыри", author: "Михаил Лермонтов" },
+    { id: "Песня_про_царя_Ивана_Васильевича_(Лермонтов)", title: "Песня про царя Ивана Васильевича", author: "Михаил Лермонтов" }
   ];
   
   let currentFontSize = parseInt(localStorage.getItem('lib_font') || '22');
@@ -95,7 +120,7 @@ const CATALOG = [
     readerAuthor.innerText = bookAuthor;
     readerContent.innerHTML = '';
     readerStatus.style.display = 'block';
-    readerStatus.innerText = 'Загрузка текста...';
+    readerStatus.innerText = 'Загрузка книги...';
     window.scrollTo(0, 0);
   
     localStorage.setItem('lib_saved_id', bookId);
@@ -104,35 +129,51 @@ const CATALOG = [
   
     try {
       const url = `https://ru.wikisource.org/w/api.php?action=parse&page=${encodeURIComponent(bookId)}&prop=text&format=json&origin=*`;
-      const res = await fetch(url);
-      const data = await res.json();
+      const res = await fetch(url, {
+        headers: {
+          'Api-User-Agent': 'GrandpaReaderApp/1.0 (https://github.com/trusdd/books)'
+        }
+      });
   
-      if (data.error || !data.parse || !data.parse.text) throw new Error('Текст не найден');
+      if (!res.ok) throw new Error('Ошибка сети');
+  
+      const data = await res.json();
+      if (data.error || !data.parse || !data.parse.text) {
+        throw new Error('Книга не найдена в хранилище');
+      }
   
       const parser = new DOMParser();
       const doc = parser.parseFromString(data.parse.text['*'], 'text/html');
   
-      doc.querySelectorAll('table, .navigation-box, .ws-noexport, script, style, .mw-empty-elt, .header, .plainlinks').forEach(el => el.remove());
+      const garbageSelectors = [
+        'table', '.navigation-box', '.ws-noexport', 'script', 'style',
+        '.mw-empty-elt', '.header', '.plainlinks', '.metadata',
+        '.catlinks', '.printfooter', '#toc', '.toc', '.mw-editsection'
+      ];
+      garbageSelectors.forEach(sel => {
+        doc.querySelectorAll(sel).forEach(el => el.remove());
+      });
   
       doc.querySelectorAll('a').forEach(a => {
-        const href = a.getAttribute('href');
-        if (href && href.startsWith('/wiki/')) {
+        const href = a.getAttribute('href') || '';
+        if (href.startsWith('/wiki/')) {
+          const targetPage = decodeURIComponent(href.replace(/^\/wiki\//, ''));
+          a.className = 'chapter-btn';
           a.onclick = (e) => {
             e.preventDefault();
-            const nextId = decodeURIComponent(href.replace('/wiki/', ''));
-            loadBook(nextId, a.innerText.trim() || bookTitle, bookAuthor);
+            loadBook(targetPage, a.innerText.trim() || bookTitle, bookAuthor);
           };
         } else {
-          a.style.color = 'inherit';
-          a.style.textDecoration = 'none';
-          a.onclick = (e) => e.preventDefault();
+          const span = document.createElement('span');
+          span.innerHTML = a.innerHTML;
+          a.replaceWith(span);
         }
       });
   
       readerContent.innerHTML = doc.body.innerHTML;
       readerStatus.style.display = 'none';
     } catch (err) {
-      readerStatus.innerText = 'Не удалось загрузить текст. Проверьте интернет.';
+      readerStatus.innerText = 'Не удалось загрузить книгу. Проверьте интернет-соединение.';
     }
   }
   

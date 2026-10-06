@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-  <title>Библиотека</title>
+  <title>Библиотека классики</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,7 +18,7 @@
 
   <main>
     <section id="library-view">
-      <input type="text" class="search-input" id="search-box" placeholder="Поиск книги или автора...">
+      <input type="text" class="search-input" id="search-box" placeholder="Поиск произведения или автора...">
       
       <div class="filter-bar" id="filters-container">
         <button class="filter-chip active" data-author="all">Все</button>
@@ -27,22 +27,22 @@
         <button class="filter-chip" data-author="Толстой">Толстой</button>
         <button class="filter-chip" data-author="Гоголь">Гоголь</button>
         <button class="filter-chip" data-author="Достоевский">Достоевский</button>
-        <button class="filter-chip" data-author="Лермонтов">Лермонтов</button>
         <button class="filter-chip" data-author="Тургенев">Тургенев</button>
+        <button class="filter-chip" data-author="Лермонтов">Лермонтов</button>
       </div>
 
       <div class="book-list" id="books-container"></div>
     </section>
 
     <section id="reader-view">
-      <button class="btn btn-full" id="btn-back">← Вернуться к книгам</button>
+      <button class="btn btn-full" id="btn-back">← Вернуться к списку книг</button>
       <h1 id="reader-title"></h1>
       <div id="reader-author" class="reader-subtitle"></div>
       
       <div id="reader-status" class="status-msg"></div>
       <article class="book-content" id="reader-content"></article>
 
-      <button class="btn btn-full" id="btn-back-bottom">← Вернуться к книгам</button>
+      <button class="btn btn-full" id="btn-back-bottom">← Вернуться к списку книг</button>
     </section>
   </main>
 
